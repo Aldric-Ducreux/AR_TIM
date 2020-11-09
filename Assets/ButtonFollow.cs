@@ -59,7 +59,7 @@ public class ButtonFollow : MonoBehaviour
             furnitures[index].SetActive(false);
             index--;
             furnitures[index].SetActive(true);
-            if(index <= 0)
+            if (index <= 0)
             {
                 ObjButtonRight.SetActive(false);
             }
@@ -70,6 +70,7 @@ public class ButtonFollow : MonoBehaviour
             furnitures[index].SetActive(false);
             index++;
             furnitures[index].SetActive(true);
+
             if (index >= furnitures.Count - 1)
             {
                 ObjButtonLeft.SetActive(false);
