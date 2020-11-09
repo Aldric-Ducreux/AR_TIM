@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lean.Touch;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -57,8 +58,10 @@ public class ButtonFollow : MonoBehaviour
         {
             list.transform.Translate(.1f, 0, 0);
             furnitures[index].SetActive(false);
+            dettachLeanTouch(furnitures[index]);
             index--;
             furnitures[index].SetActive(true);
+            attachLeanTouch(furnitures[index]);
             if (index <= 0)
             {
                 ObjButtonRight.SetActive(false);
@@ -68,9 +71,10 @@ public class ButtonFollow : MonoBehaviour
         {
             list.transform.Translate(-.1f, 0, 0);
             furnitures[index].SetActive(false);
+            dettachLeanTouch(furnitures[index]);
             index++;
             furnitures[index].SetActive(true);
-
+            attachLeanTouch(furnitures[index]);
             if (index >= furnitures.Count - 1)
             {
                 ObjButtonLeft.SetActive(false);
@@ -87,6 +91,23 @@ public class ButtonFollow : MonoBehaviour
             list.Add(Go.transform.GetChild(i).gameObject);
         }
         return list;
+    }
+
+    public void attachLeanTouch(GameObject go)
+    {
+        go.AddComponent<LeanPinchScale>();
+        LeanTwistRotateAxis script = go.AddComponent<LeanTwistRotateAxis>();
+
+        script.Axis.x = -1;
+        script.Axis.y = -1;
+    }
+
+    public void dettachLeanTouch(GameObject go)
+    {
+        Destroy(go.GetComponent<LeanPinchScale>());
+        Destroy(go.GetComponent<LeanTwistRotateAxis>());
+        go.transform.rotation = Quaternion.Euler(0, -180, 0);
+        go.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
 }
