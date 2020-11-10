@@ -23,7 +23,10 @@ public class ButtonFollow : MonoBehaviour
         for(int i = 1; i < furnitures.Count; i++)
         {
             furnitures[i].SetActive(false);
+            attachLeanTouch(furnitures[i]);
+
         }
+        attachLeanTouch(furnitures[0]);
         ObjButtonRight.SetActive(false);
     }
 
@@ -57,11 +60,10 @@ public class ButtonFollow : MonoBehaviour
         if (goRight && index > 0)
         {
             list.transform.Translate(.1f, 0, 0);
+            resetLeanTouch(furnitures[index]);
             furnitures[index].SetActive(false);
-            dettachLeanTouch(furnitures[index]);
             index--;
             furnitures[index].SetActive(true);
-            attachLeanTouch(furnitures[index]);
             if (index <= 0)
             {
                 ObjButtonRight.SetActive(false);
@@ -70,11 +72,10 @@ public class ButtonFollow : MonoBehaviour
         } else if(!goRight &&  index < furnitures.Count-1)
         {
             list.transform.Translate(-.1f, 0, 0);
+            resetLeanTouch(furnitures[index]);
             furnitures[index].SetActive(false);
-            dettachLeanTouch(furnitures[index]);
             index++;
             furnitures[index].SetActive(true);
-            attachLeanTouch(furnitures[index]);
             if (index >= furnitures.Count - 1)
             {
                 ObjButtonLeft.SetActive(false);
@@ -95,17 +96,36 @@ public class ButtonFollow : MonoBehaviour
 
     public void attachLeanTouch(GameObject go)
     {
-        go.AddComponent<LeanPinchScale>();
-        LeanTwistRotateAxis script = go.AddComponent<LeanTwistRotateAxis>();
 
-        script.Axis.x = -1;
-        script.Axis.y = -1;
+        LeanSelectable selectable = go.AddComponent<LeanSelectable>();
+        //selectable.DeselectOnUp = true;
+        LeanSelectableRendererColor selectableRender = go.AddComponent<LeanSelectableRendererColor>();
+        selectableRender.AutoGetDefaultColor = true;
+
+        LeanPinchScale scale = go.AddComponent<LeanPinchScale>();
+        scale.Use.RequiredSelectable = selectable;
+        LeanTwistRotateAxis rotateAxis = go.AddComponent<LeanTwistRotateAxis>();
+        rotateAxis.Use.RequiredSelectable = selectable;
+        rotateAxis.Axis.x = -1;
+        rotateAxis.Axis.y = -1;
+
+
+
+
+
+
     }
 
     public void dettachLeanTouch(GameObject go)
     {
         Destroy(go.GetComponent<LeanPinchScale>());
         Destroy(go.GetComponent<LeanTwistRotateAxis>());
+        go.transform.rotation = Quaternion.Euler(0, -180, 0);
+        go.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    void resetLeanTouch(GameObject go)
+    {
         go.transform.rotation = Quaternion.Euler(0, -180, 0);
         go.transform.localScale = new Vector3(1f, 1f, 1f);
     }
