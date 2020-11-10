@@ -9,11 +9,15 @@ using UnityEngine.UI;
 
 public class ButtonFollow : MonoBehaviour
 {
-    public GameObject ObjButtonLeft;
-    public GameObject ObjButtonRight;
+    public GameObject goButtonLeft;
+    public GameObject goButtonRight;
     public GameObject list;
+    public GameObject goAudioAction; 
+    public GameObject goAudioGesture;
     public Transform cam;
-    public List<GameObject> furnitures;
+
+    private List<GameObject> furnitures;
+    private AudioSource audioAction;
     private int index = 0;
 
     // Start is called before the first frame update
@@ -27,7 +31,8 @@ public class ButtonFollow : MonoBehaviour
 
         }
         attachLeanTouch(furnitures[0]);
-        ObjButtonRight.SetActive(false);
+        goButtonRight.SetActive(false);
+        audioAction = goAudioAction.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -36,8 +41,8 @@ public class ButtonFollow : MonoBehaviour
         if (cam != null)
         {
             Quaternion cr = cam.rotation;
-            ObjButtonLeft.transform.rotation = cr;
-            ObjButtonRight.transform.rotation = cr;
+            goButtonLeft.transform.rotation = cr;
+            goButtonRight.transform.rotation = cr;
         }
     }
 
@@ -59,6 +64,7 @@ public class ButtonFollow : MonoBehaviour
     {
         if (goRight && index > 0)
         {
+            audioAction.Play();
             list.transform.Translate(.1f, 0, 0);
             resetLeanTouch(furnitures[index]);
             furnitures[index].SetActive(false);
@@ -66,11 +72,12 @@ public class ButtonFollow : MonoBehaviour
             furnitures[index].SetActive(true);
             if (index <= 0)
             {
-                ObjButtonRight.SetActive(false);
+                goButtonRight.SetActive(false);
             }
-            ObjButtonLeft.SetActive(true);
+            goButtonLeft.SetActive(true);
         } else if(!goRight &&  index < furnitures.Count-1)
         {
+            audioAction.Play();
             list.transform.Translate(-.1f, 0, 0);
             resetLeanTouch(furnitures[index]);
             furnitures[index].SetActive(false);
@@ -78,9 +85,9 @@ public class ButtonFollow : MonoBehaviour
             furnitures[index].SetActive(true);
             if (index >= furnitures.Count - 1)
             {
-                ObjButtonLeft.SetActive(false);
+                goButtonLeft.SetActive(false);
             }
-            ObjButtonRight.SetActive(true);
+            goButtonRight.SetActive(true);
         }
     }
 
