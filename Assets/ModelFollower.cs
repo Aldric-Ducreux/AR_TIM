@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ModelFollower : MonoBehaviour
 {
-    public GameObject FloatingText;
-    public Transform cam;
+    [SerializeField] private GameObject FloatingText;
+    [SerializeField] public Transform cam;
     // Start is called before the first frame update
     void Start()
     {

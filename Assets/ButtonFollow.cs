@@ -4,17 +4,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ButtonFollow : MonoBehaviour
 {
-    public GameObject goButtonLeft;
-    public GameObject goButtonRight;
-    public GameObject list;
-    public GameObject goAudioAction; 
-    public GameObject goAudioGesture;
-    public Transform cam;
+        [SerializeField] private Transform cam;
+    [Header("UI")]
+    [SerializeField] private GameObject goButtonLeft;
+    [SerializeField] private GameObject goButtonRight;
+
+    [Header("Model")]
+    [SerializeField] private GameObject list;
+    [SerializeField] private LeanSelectable selectablePrefabComponent;
+
+    [Header("Audio")]
+    [SerializeField] private GameObject goAudioAction;
+
+
 
     private List<GameObject> furnitures;
     private AudioSource audioAction;
@@ -104,8 +112,7 @@ public class ButtonFollow : MonoBehaviour
     public void attachLeanTouch(GameObject go)
     {
 
-        LeanSelectable selectable = go.AddComponent<LeanSelectable>();
-        //selectable.DeselectOnUp = true;
+        LeanSelectable selectable = go.GetComponent<LeanSelectable>();
         LeanSelectableRendererColor selectableRender = go.AddComponent<LeanSelectableRendererColor>();
         selectableRender.AutoGetDefaultColor = true;
 
@@ -115,14 +122,11 @@ public class ButtonFollow : MonoBehaviour
         rotateAxis.Use.RequiredSelectable = selectable;
         rotateAxis.Axis.x = -1;
         rotateAxis.Axis.y = -1;
-
-
-
-
-
-
     }
-
+    public void PlaySound (AudioClip clip)
+    {
+        audioAction.PlayOneShot(clip);
+    }
     public void dettachLeanTouch(GameObject go)
     {
         Destroy(go.GetComponent<LeanPinchScale>());

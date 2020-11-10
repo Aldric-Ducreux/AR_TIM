@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraRef : MonoBehaviour
 {
-    public Transform cam;
+    [SerializeField] private Transform cam;
     // Start is called before the first frame update
     void Start()
     {
