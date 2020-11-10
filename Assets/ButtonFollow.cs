@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -10,14 +11,15 @@ using UnityEngine.UI;
 
 public class ButtonFollow : MonoBehaviour
 {
-        [SerializeField] private Transform cam;
+    [SerializeField] private Transform cam;
+
     [Header("UI")]
     [SerializeField] private GameObject goButtonLeft;
     [SerializeField] private GameObject goButtonRight;
+    [SerializeField] private TextMeshPro textInfos;
 
     [Header("Model")]
     [SerializeField] private GameObject list;
-    [SerializeField] private LeanSelectable selectablePrefabComponent;
 
     [Header("Audio")]
     [SerializeField] private GameObject goAudioAction;
@@ -39,8 +41,11 @@ public class ButtonFollow : MonoBehaviour
 
         }
         attachLeanTouch(furnitures[0]);
+        textInfos.text = furnitures[0].GetComponent<ModelFollower>().infos;
+
         goButtonRight.SetActive(false);
         audioAction = goAudioAction.GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -51,6 +56,7 @@ public class ButtonFollow : MonoBehaviour
             Quaternion cr = cam.rotation;
             goButtonLeft.transform.rotation = cr;
             goButtonRight.transform.rotation = cr;
+            textInfos.transform.rotation = cr;
         }
     }
 
@@ -78,6 +84,7 @@ public class ButtonFollow : MonoBehaviour
             furnitures[index].SetActive(false);
             index--;
             furnitures[index].SetActive(true);
+            textInfos.text = furnitures[index].GetComponent<ModelFollower>().infos;
             if (index <= 0)
             {
                 goButtonRight.SetActive(false);
@@ -91,6 +98,7 @@ public class ButtonFollow : MonoBehaviour
             furnitures[index].SetActive(false);
             index++;
             furnitures[index].SetActive(true);
+            textInfos.text = furnitures[index].GetComponent<ModelFollower>().infos;
             if (index >= furnitures.Count - 1)
             {
                 goButtonLeft.SetActive(false);
