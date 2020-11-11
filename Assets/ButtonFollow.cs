@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ButtonFollow : MonoBehaviour
 {
@@ -124,8 +125,12 @@ public class ButtonFollow : MonoBehaviour
         LeanSelectableRendererColor selectableRender = go.AddComponent<LeanSelectableRendererColor>();
         selectableRender.AutoGetDefaultColor = true;
 
+        LeanDragTranslate translate = go.AddComponent<LeanDragTranslate>();
+        translate.Use.RequiredSelectable = selectable;
+
         LeanPinchScale scale = go.AddComponent<LeanPinchScale>();
         scale.Use.RequiredSelectable = selectable;
+
         LeanTwistRotateAxis rotateAxis = go.AddComponent<LeanTwistRotateAxis>();
         rotateAxis.Use.RequiredSelectable = selectable;
         rotateAxis.Axis.x = -1;
@@ -147,6 +152,7 @@ public class ButtonFollow : MonoBehaviour
     {
         go.transform.rotation = Quaternion.Euler(0, -180, 0);
         go.transform.localScale = new Vector3(1f, 1f, 1f);
+        go.transform.position = go.transform.parent.position;
     }
 
 }
