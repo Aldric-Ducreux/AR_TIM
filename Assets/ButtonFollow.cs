@@ -135,6 +135,8 @@ public class ButtonFollow : MonoBehaviour
         rotateAxis.Use.RequiredSelectable = selectable;
         rotateAxis.Axis.x = -1;
         rotateAxis.Axis.y = -1;
+
+        resetLeanTouch(go);
     }
     public void PlaySound (AudioClip clip)
     {
